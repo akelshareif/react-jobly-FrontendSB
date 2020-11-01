@@ -1,0 +1,9 @@
+.InfoCard {
+    margin: 15px auto;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.InfoCard i {
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.568);
+}

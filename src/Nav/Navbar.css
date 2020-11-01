@@ -1,0 +1,7 @@
+.NavBar a {
+    margin-right: 5px;
+}
+
+.NavBar a:hover {
+    text-decoration: none;
+}
