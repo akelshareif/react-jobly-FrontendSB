@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
 
 import './Navbar.css';
 
-const NavBar = () => {
+const NavBar = ({ logout }) => {
+    const history = useHistory();
+
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
 
+    const handleLogout = () => {
+        logout();
+        history.push('/');
+    };
+
     return (
         <div className="NavBar">
-            <Navbar color="light" light expand="md">
+            <Navbar light expand="md">
                 <NavbarBrand tag={Link} to="/">
                     Jobly
                 </NavbarBrand>
@@ -34,9 +41,9 @@ const NavBar = () => {
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink tag={Link} to="/login">
-                                Login
-                            </NavLink>
+                            <Button outline size="sm" color="secondary" className="mt-1" onClick={handleLogout}>
+                                Logout
+                            </Button>
                         </NavItem>
                     </Nav>
                 </Collapse>

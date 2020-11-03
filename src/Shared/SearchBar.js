@@ -1,34 +1,50 @@
 import React, { useState } from 'react';
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+import { Form, InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+
+import JoblyAPI from '../JoblyAPI';
 import './SearchBar.css';
 
-const SearchBar = () => {
+const SearchBar = ({ setSearch, searchCompanies }) => {
     const [searchTerm, setSearchTerm] = useState({
         term: '',
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setSearchTerm({
+        setSearchTerm((data) => ({
+            ...data,
             [name]: value,
-        });
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(searchTerm);
+        if (searchCompanies) {
+            const { companies } = await JoblyAPI.request('companies', { search: searchTerm.term });
+            setSearch(companies);
+        } else {
+            const { jobs } = await JoblyAPI.request('jobs', { search: searchTerm.term });
+            setSearch(jobs);
+        }
     };
 
     return (
         <div className="SearchBar w-75">
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <InputGroup size="lg">
-                    <Input type="text" name="name" onChange={handleChange} placeholder="Enter search term.." />
+                    <Input
+                        tag="input"
+                        type="text"
+                        name="term"
+                        onChange={handleChange}
+                        value={searchTerm.term}
+                        placeholder="Enter search term.."
+                    />
                     <InputGroupAddon addonType="append">
                         <Button color="primary">Submit</Button>
                     </InputGroupAddon>
                 </InputGroup>
-            </form>
+            </Form>
         </div>
     );
 };

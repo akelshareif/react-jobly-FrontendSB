@@ -2,10 +2,7 @@ import axios from 'axios';
 
 class JoblyApi {
     static async request(endpoint, paramsOrData = {}, verb = 'get') {
-        paramsOrData._token = // for now, hardcode token for "testing"
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc' +
-            '3RpbmciLCJpc19hZG1pbiI6ZmFsc2UsImlhdCI6MTU1MzcwMzE1M30.' +
-            'COmFETEsTxN_VfIlgIKw0bYJLkvbRQNgO1XCSE8NZ0U';
+        paramsOrData._token = localStorage.getItem('_token');
 
         console.debug('API Call:', endpoint, paramsOrData, verb);
 
@@ -30,6 +27,50 @@ class JoblyApi {
     static async getCompany(handle) {
         let res = await this.request(`companies/${handle}`);
         return res.company;
+    }
+
+    static async login(data) {
+        try {
+            let res = await this.request('login', data, 'post');
+            if (res.token) {
+                //store in local storage
+                localStorage.setItem('_token', res.token);
+            }
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    }
+
+    static async logout() {
+        localStorage.removeItem('_token');
+    }
+
+    static async register(data) {
+        try {
+            let res = await this.request('signup', data, 'post');
+            if (res.token) {
+                localStorage.setItem('_token', res.token);
+            }
+        } catch (e) {
+            console.error('API Error:', e);
+            throw e;
+        }
+    }
+
+    static async getCurrentUser(username) {
+        const user = this.request(`users/${username}`);
+        return user;
+    }
+
+    static async updateUser(username, data) {
+        const updatedUser = await this.request(`users/${username}`, data, 'patch');
+        return updatedUser;
+    }
+
+    static async apply(jobID, username) {
+        const msg = await this.request(`jobs/${jobID}/apply`, username, 'post');
+        return msg;
     }
 }
 

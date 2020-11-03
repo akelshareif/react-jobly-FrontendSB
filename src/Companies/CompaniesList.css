@@ -1,0 +1,8 @@
+.CompanyListLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.CompanyListLink:hover {
+    text-decoration: none;
+}

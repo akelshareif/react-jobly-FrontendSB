@@ -1,3 +1,9 @@
+.NavBar {
+    background-color: white;
+    box-shadow: 5px 0 3px gray;
+    color: rgb(6, 122, 255);
+}
+
 .NavBar a {
     margin-right: 5px;
 }

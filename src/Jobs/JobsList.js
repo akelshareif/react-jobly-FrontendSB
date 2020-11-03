@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import JoblyAPI from '../JoblyAPI';
 
 import SearchBar from '../Shared/SearchBar';
 import InfoCard from '../Shared/InfoCard';
 
-const JobList = () => {
+const JobList = ({ user }) => {
     const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
@@ -15,14 +16,18 @@ const JobList = () => {
         getJobs();
     }, []);
 
-    return (
-        <div className="container">
-            <SearchBar />
-            {jobs.map((j) => (
-                <InfoCard key={j.id} data={j} />
-            ))}
-        </div>
-    );
+    if (user) {
+        return (
+            <div className="container">
+                <SearchBar setSearch={setJobs} />
+                {jobs.map((j) => (
+                    <InfoCard key={j.id} data={j} user={user} />
+                ))}
+            </div>
+        );
+    } else {
+        return <Redirect to="/" />;
+    }
 };
 
 export default JobList;

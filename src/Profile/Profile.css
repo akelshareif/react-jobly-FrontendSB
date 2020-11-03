@@ -1,0 +1,10 @@
+.ProfileForm {
+    background-color: white;
+    border: 1px solid rgb(223, 223, 223);
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.ProfileForm label {
+    font-weight: bold;
+}
